@@ -5,29 +5,29 @@ import { verify } from 'argon2';
 import { JwtService } from '@nestjs/jwt';
 import { AuthJwtPayload } from './types/auth-jwtPayload';
 import { User } from '@prisma/client';
+import { CreateUserInput } from 'src/user/dto/create-user.input';
 
 @Injectable()
 export class AuthService {
-  // Removed duplicate login method to resolve duplicate implementation error.
-
   constructor(
-    private Prisma: PrismaService,
+    private prisma: PrismaService,
     private jwtService: JwtService,
   ) {}
+
   async validateLocalUser({ email, password }: SignInInput) {
-    const user = await this.Prisma.user.findUnique({
+    const user = await this.prisma.user.findUnique({
       where: {
         email,
       },
     });
 
-    if (!user || !user.password)
-      throw new UnauthorizedException('Invalid credentials');
+    if (!user) throw new UnauthorizedException('User Not Found');
 
+    if (!user.password) throw new UnauthorizedException('User password not set');
     const passwordMatched = await verify(user.password, password);
 
     if (!passwordMatched)
-      throw new UnauthorizedException('Invalid credentials');
+      throw new UnauthorizedException('Invalid Credentials!');
 
     return user;
   }
@@ -35,16 +35,27 @@ export class AuthService {
   async generateToken(userId: number) {
     const payload: AuthJwtPayload = { sub: userId };
     const accessToken = await this.jwtService.signAsync(payload);
-    return {accessToken};
+    return { accessToken };
   }
 
   async login(user: User) {
-    const {accessToken} = await this.generateToken(user.id);
+    const { accessToken } = await this.generateToken(user.id);
     return {
       id: user.id,
       name: user.name,
       avatar: user.avatar,
       accessToken,
     };
+  }
+  async validateJwtUser(userId: number) {
+    const user = await this.prisma.user.findUnique({
+      where: {
+        id: userId,
+      },
+    });
+
+    if (!user) throw new UnauthorizedException('User not found!');
+    const currentUser = { id: user.id };
+    return currentUser;
   }
 }
