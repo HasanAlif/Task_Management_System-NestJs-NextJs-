@@ -10,28 +10,37 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
-model User{
-  id Int @id @default(autoincrement())
-  name String
-  email String @unique
-  bio String?
-  avatar String?
-  password String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  tasks Task[]
+model User {
+  id        Int       @id @default(autoincrement())
+  name      String
+  email     String    @unique
+  bio       String?
+  avatar    String?
+  password  String?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  tasks     Task[]
 }
 
 model Task {
-  id Int @id @default(autoincrement())
-  slug String? @unique
-  title String
-  content String
+  id        Int       @id @default(autoincrement())
+  slug      String?   @unique
+  title     String
+  content   String
   thumbnail String?
   published Boolean
-  authorId Int
-  author User @relation(fields: [authorId], references: [id])
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  authorId  Int
+  author    User      @relation(fields: [authorId], references: [id])
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  tags  Tag[]  @relation("TaskTags")
 }
+
+
+
+model Tag {
+  id    Int    @id @default(autoincrement())
+  name  String @unique
+  tasks Task[] @relation("TaskTags")
+}
+

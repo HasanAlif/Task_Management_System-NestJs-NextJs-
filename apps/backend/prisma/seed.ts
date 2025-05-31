@@ -23,11 +23,11 @@ async function main() {
     data: users,
   });
 
-  const tasks = Array.from({ length: 40 }).map(() => ({
+  const tasks = Array.from({ length: 400 }).map(() => ({
     title: faker.lorem.sentence(),
     slug: generateSlug(faker.lorem.sentence()),
     content: faker.lorem.paragraphs(3),
-    thumbnail: faker.image.urlLoremFlickr(),
+    thumbnail: faker.image.urlLoremFlickr({ height: 240, width: 320 }),
     authorId: faker.number.int({ min: 1, max: 10 }),
     published: true,
   }));

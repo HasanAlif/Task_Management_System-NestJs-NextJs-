@@ -35,12 +35,30 @@ type AuthPayload {
 }
 
 type Query {
-  tasks: [Task!]!
+  tasks(skip: Float, take: Float): [Task!]!
+  taskCount: Int!
+  getTaskById(id: Int!): Task!
+  getUserTasks(skip: Int, take: Int): [Task!]!
+  userTaskCount: Int!
 }
 
 type Mutation {
+  createTask(createTaskInput: CreateTaskInput!): Task!
+  updateTask(updateTaskInput: UpdateTaskInput!): Task!
+  deleteTask(taskId: Int!): Boolean!
   createUser(createUserInput: CreateUserInput!): User!
   signIn(signInInput: SignInInput!): AuthPayload!
+}
+
+input CreateTaskInput {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
+input UpdateTaskInput {
+  """Example field (placeholder)"""
+  exampleField: Int
+  id: Int!
 }
 
 input CreateUserInput {
