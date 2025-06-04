@@ -5,39 +5,39 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import { DEFAULT_PAGE_SIZE } from 'src/constants';
 
 @Injectable()
-export class TaskService {
-  constructor(private prisma: PrismaService) {}
+export class TaskService {// The TaskService class is responsible for handling task-related operations, such as fetching tasks, creating, updating, and deleting tasks.
+  constructor(private prisma: PrismaService) {}// The constructor injects the PrismaService, which is used to interact with the database.
 
-  async findAll({
-    skip = 0,
-    take = DEFAULT_PAGE_SIZE,
+  async findAll({// The findAll method retrieves all tasks from the database, with optional pagination parameters.
+    skip = 0,// The skip parameter is used to skip a certain number of tasks, useful for pagination.
+    take = DEFAULT_PAGE_SIZE,// The take parameter specifies how many tasks to retrieve, with a default value defined in constants.
   }: {
-    skip?: number;
-    take?: number;
+    skip?: number;// The skip parameter is optional and defaults to 0.
+    take?: number;// The take parameter is optional and defaults to the value of DEFAULT_PAGE_SIZE.
   }) {
-    return await this.prisma.task.findMany({
+    return await this.prisma.task.findMany({// The findMany method retrieves multiple tasks from the database.
       skip,
       take,
     });
   }
 
-  async count() {
-    return await this.prisma.task.count();
+  async count() {// The count method returns the total number of tasks in the database.
+    return await this.prisma.task.count();// The count method uses the PrismaService to count the number of tasks.
   }
 
-  async findOne(id: number) {
-    return await this.prisma.task.findFirst({
-      where: {
+  async findOne(id: number) {// The findOne method retrieves a single task by its ID.
+    return await this.prisma.task.findFirst({// The findFirst method retrieves the first task that matches the given ID.
+      where: {// The where clause filters tasks by their ID.
         id,
       },
-      include: {
+      include: {// The include clause specifies related data to be included in the result.
         author: true,
         tags: true, 
       },
     });
   }
 
-  async findByUser({
+  async findByUser({ // The findByUser method retrieves tasks created by a specific user, with pagination support.
     userId,
     skip,
     take,
@@ -46,13 +46,13 @@ export class TaskService {
     skip: number;
     take: number;
   }) {
-    return await this.prisma.task.findMany({
+    return await this.prisma.task.findMany({// The findMany method retrieves multiple tasks created by the specified user.
       where: {
         author: {
           id: userId,
         },
       },
-      select: {
+      select: {// The select clause specifies which fields to return in the result.
         id: true,
         content: true,
         createdAt: true,
@@ -66,8 +66,8 @@ export class TaskService {
     });
   }
 
-  async userTaskCount(userId: number) {
-    return this.prisma.task.count({
+  async userTaskCount(userId: number) {// The userTaskCount method returns the total number of tasks created by a specific user.
+    return this.prisma.task.count({// The count method counts the number of tasks where the authorId matches the specified userId.
       where: {
         authorId: userId,
       },
@@ -129,20 +129,20 @@ export class TaskService {
   //   });
   // }
 
-  async delete({ taskId, userId }: { taskId: number; userId: number }) {
-    const authorIdMatched = await this.prisma.task.findUnique({
-      where: { id: taskId, authorId: userId },
+  async delete({ taskId, userId }: { taskId: number; userId: number }) {// The delete method removes a task from the database, ensuring that the user attempting to delete it is the author of the task.
+    const authorIdMatched = await this.prisma.task.findUnique({// The findUnique method checks if a task exists with the specified ID and authorId.
+      where: { id: taskId, authorId: userId },// The where clause filters tasks by their ID and authorId.
     });
 
-    if (!authorIdMatched) throw new UnauthorizedException();
+    if (!authorIdMatched) throw new UnauthorizedException();// If no task is found with the specified ID and authorId, an UnauthorizedException is thrown.
 
-    const result = await this.prisma.task.delete({
+    const result = await this.prisma.task.delete({// The delete method removes the task from the database.
       where: {
         id: taskId,
         authorId: userId,
       },
     });
 
-    return !!result;
+    return !!result;// The method returns true if the task was successfully deleted, otherwise it returns false.
   }
 }
