@@ -30,26 +30,35 @@ export class TaskResolver {// The TaskResolver class is responsible for handling
   }
 
   @Query(() => Int, { name: 'taskCount' })// The Query decorator marks this method as a GraphQL query that returns the total count of tasks.
+
   count() {// The count method retrieves the total number of tasks in the database.
-    // It does not require any parameters and returns an integer representing the total count.
 
     return this.taskService.count();// The count method of the TaskService is called to get the total number of tasks.
   }
 
   @Query(() => Task)// The Query decorator marks this method as a GraphQL query that returns a single Task entity.
+
   getTaskById(@Args('id', { type: () => Int }) id: number) {// The getTaskById method retrieves a task by its ID.
+
     return this.taskService.findOne(id);// The findOne method of the TaskService is called to retrieve the task with the specified ID.
   }
 
   @UseGuards(JwtAuthGuard)// The UseGuards decorator applies the JwtAuthGuard to this method, ensuring that only authenticated users can access it.
-  // The JwtAuthGuard is a custom guard that checks if the user is authenticated using a JWT token.
+
+  
   @Query(() => [Task])// The Query decorator marks this method as a GraphQL query that returns an array of Task entities.
+
   getUserTasks(// The getUserTasks method retrieves tasks created by the authenticated user.
+
     @Context() context,// The context parameter provides access to the request context, which includes the authenticated user.
+
     @Args('skip', { nullable: true, type: () => Int }) skip?: number,// The skip parameter is used to skip a certain number of tasks, useful for pagination.
+
     @Args('take', { nullable: true, type: () => Int }) take?: number,// The take parameter specifies how many tasks to retrieve, with a default value defined in constants.
+
   ) {
     const userId = context.req.user.id;// The userId is extracted from the request context, which is typically set by the authentication guard.
+
     return this.taskService.findByUser({// The findByUser method of the TaskService is called to retrieve tasks created by the specified user.
       userId,
       skip: skip ?? 0,
@@ -58,11 +67,15 @@ export class TaskResolver {// The TaskResolver class is responsible for handling
   }
 
   @UseGuards(JwtAuthGuard)// The UseGuards decorator applies the JwtAuthGuard to this method, ensuring that only authenticated users can access it.
-  // The JwtAuthGuard is a custom guard that checks if the user is authenticated using a JWT token.
+  
   @Query(() => Int)// The Query decorator marks this method as a GraphQL query that returns the count of tasks created by the authenticated user.
+
   userTaskCount(@Context() context) {// The userTaskCount method retrieves the count of tasks created by the authenticated user.
+
     const userId = context.req.user.id;// The userId is extracted from the request context, which is typically set by the authentication guard.
+
     return this.taskService.userTaskCount(userId);// The userTaskCount method of the TaskService is called to get the count of tasks created by the specified user.
+    
   }
 
   @UseGuards(JwtAuthGuard)
