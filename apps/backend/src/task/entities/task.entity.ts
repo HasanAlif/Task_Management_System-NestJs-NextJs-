@@ -1,7 +1,7 @@
 import { ObjectType, Field, Int } from '@nestjs/graphql';
 
 @ObjectType()// The ObjectType decorator marks this class as a GraphQL object type, which can be queried or mutated in GraphQL.
-// It allows the class to be used as a GraphQL type in queries and mutations.
+
 export class Task {// The Task class represents a task entity in the application.
   @Field(() => Int)
   id: number;

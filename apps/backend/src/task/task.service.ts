@@ -6,13 +6,18 @@ import { DEFAULT_PAGE_SIZE } from 'src/constants';
 
 @Injectable()
 export class TaskService {// The TaskService class is responsible for handling task-related operations, such as fetching tasks, creating, updating, and deleting tasks.
+
   constructor(private prisma: PrismaService) {}// The constructor injects the PrismaService, which is used to interact with the database.
 
   async findAll({// The findAll method retrieves all tasks from the database, with optional pagination parameters.
+
     skip = 0,// The skip parameter is used to skip a certain number of tasks, useful for pagination.
+
     take = DEFAULT_PAGE_SIZE,// The take parameter specifies how many tasks to retrieve, with a default value defined in constants.
+
   }: {
     skip?: number;// The skip parameter is optional and defaults to 0.
+
     take?: number;// The take parameter is optional and defaults to the value of DEFAULT_PAGE_SIZE.
   }) {
     return await this.prisma.task.findMany({// The findMany method retrieves multiple tasks from the database.
@@ -22,11 +27,14 @@ export class TaskService {// The TaskService class is responsible for handling t
   }
 
   async count() {// The count method returns the total number of tasks in the database.
+
     return await this.prisma.task.count();// The count method uses the PrismaService to count the number of tasks.
   }
 
   async findOne(id: number) {// The findOne method retrieves a single task by its ID.
+
     return await this.prisma.task.findFirst({// The findFirst method retrieves the first task that matches the given ID.
+      
       where: {// The where clause filters tasks by their ID.
         id,
       },
