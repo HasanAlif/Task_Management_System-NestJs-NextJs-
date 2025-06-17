@@ -5,8 +5,8 @@ import { PrismaModule } from './prisma/prisma.module';// Importing the Prisma mo
 import { GraphQLModule } from '@nestjs/graphql';// Importing the GraphQL module to set up GraphQL in the application
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';// Importing ApolloDriver and ApolloDriverConfig for GraphQL configuration
 import { join } from 'path';// Importing join from 'path' to handle file paths
-import { TaskModule } from './task/task.module';// Importing the Task module for task management
-import { UserModule } from './user/user.module';// Importing the User module for user management
+import { TaskModule } from './task/task.module';
+import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';// Importing the Auth module for authentication functionalities
 import { ConfigModule } from '@nestjs/config';// Importing ConfigModule for environment configuration management
 
