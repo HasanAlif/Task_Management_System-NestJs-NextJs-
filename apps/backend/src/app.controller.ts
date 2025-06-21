@@ -7,9 +7,9 @@ export class AppController {
 
   constructor(private readonly appService: AppService) {}// The constructor injects the AppService, allowing this controller to use its methods
 
-  @Get()// The Get decorator defines a route that responds to GET requests at the root URL
+  @Get()/
 
-  getHello(): string {// This method handles GET requests to the root URL and returns a string response
+  getHello(): string {
     
     return this.appService.getHello();// It calls the getHello method from the AppService to get the response
   }

@@ -12,7 +12,7 @@ import { ConfigModule } from '@nestjs/config';// Importing ConfigModule for envi
 
 @Module({// Defining the main application module
   imports: [// Importing necessary modules
-    // Setting up GraphQL with Apollo Driver and auto-generating the schema file
+    
     GraphQLModule.forRoot<ApolloDriverConfig>({// Using ApolloDriver for GraphQL
       driver: ApolloDriver,// Specifying the driver as ApolloDriver
       autoSchemaFile: join(process.cwd(), 'src/graphql/schema.gql'),// Automatically generating the schema file at the specified path
