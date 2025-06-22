@@ -1,17 +1,17 @@
-import { Module } from '@nestjs/common';// Importing the Module decorator from NestJS to define a module
-import { AppController } from './app.controller';// Importing the main application controller
-import { AppService } from './app.service';// Importing the main application service
-import { PrismaModule } from './prisma/prisma.module';// Importing the Prisma module for database interactions
-import { GraphQLModule } from '@nestjs/graphql';// Importing the GraphQL module to set up GraphQL in the application
-import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';// Importing ApolloDriver and ApolloDriverConfig for GraphQL configuration
-import { join } from 'path';// Importing join from 'path' to handle file paths
+import { Module } from '@nestjs/common';
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
+import { PrismaModule } from './prisma/prisma.module';
+import { GraphQLModule } from '@nestjs/graphql';
+import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
+import { join } from 'path';
 import { TaskModule } from './task/task.module';
 import { UserModule } from './user/user.module';
-import { AuthModule } from './auth/auth.module';// Importing the Auth module for authentication functionalities
-import { ConfigModule } from '@nestjs/config';// Importing ConfigModule for environment configuration management
+import { AuthModule } from './auth/auth.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({// Defining the main application module
-  imports: [// Importing necessary modules
+  imports: [
     
     GraphQLModule.forRoot<ApolloDriverConfig>({// Using ApolloDriver for GraphQL
       driver: ApolloDriver,// Specifying the driver as ApolloDriver
